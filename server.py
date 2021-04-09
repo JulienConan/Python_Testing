@@ -40,7 +40,7 @@ def book(competition,club):
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if datetime.strptime(foundCompetition['date'], "%Y-%m-%d %H:%M:%S") < datetime.now():
         flash("You don't booking places in past competitions.")
-        return render_template('welcome.html',club=club,competitions=competitions)
+        return render_template('welcome.html',club=foundClub,competitions=competitions)
     if foundClub and foundCompetition:
         return render_template('booking.html',club=foundClub,competition=foundCompetition)
     else:
