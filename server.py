@@ -50,18 +50,19 @@ def book(competition,club):
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
+    points_for_places = 3
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
     if placesRequired > 12:
         flash("You shouldn't be able to book more than 12 places per competition.")
-    if placesRequired > int(club['points']):
+    elif placesRequired*points_for_places > int(club['points']):
         flash("You shouldn't be able to redeem more points than available.")
-    if (int(competition['numberOfPlaces'])-placesRequired) < 0 :
+    elif (int(competition['numberOfPlaces'])-placesRequired) < 0 :
         flash("Not enough places for this tournament.")
     else:
         competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-        club['points'] = int(club['points'])-placesRequired 
+        club['points'] = int(club['points'])-(placesRequired*points_for_places)
         flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
